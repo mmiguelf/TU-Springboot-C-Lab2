@@ -77,13 +77,26 @@ public class ProductController {
 
     // @PatchMapping
     @PatchMapping("/{id}")
-    public ResponseEntity<Product> patchProduct(@PathVariable Long id, @Valid @RequestBody Product patchData){
-        return productService.patch(id, patchData).map(ResponseEntity::ok).orElseGet(()->ResponseEntity.notFound().build());
+    public ResponseEntity<ProductResponseDTO> patchProduct(@PathVariable Long id, @Valid @RequestBody ProductRequestDTO productRequestDTO){
+        return productService.patch(id, productRequestDTO)
+                .map(updated -> ResponseEntity.ok(toResponseDTO(updated)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // @PutMapping
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @Valid @RequestBody Product updatedProduct){
-        return productService.update(id, updatedProduct).map(ResponseEntity::ok).orElseGet(()->ResponseEntity.notFound().build());
+    public ResponseEntity<ProductResponseDTO> updateProduct(@PathVariable Long id, @Valid @RequestBody ProductRequestDTO productRequestDTO){
+        return productService.update(id, productRequestDTO)
+                .map(updated -> ResponseEntity.ok(toResponseDTO(updated)))
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    // Utility
+    private ProductResponseDTO toResponseDTO(Product product) {
+        ProductResponseDTO dto = new ProductResponseDTO();
+        dto.setId(product.getId());
+        dto.setName(product.getName());
+        dto.setPrice(product.getPrice());
+        return dto;
     }
 }

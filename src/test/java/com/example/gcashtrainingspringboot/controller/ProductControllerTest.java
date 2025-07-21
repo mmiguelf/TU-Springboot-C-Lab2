@@ -1,5 +1,6 @@
 package com.example.gcashtrainingspringboot.controller;
 
+import com.example.gcashtrainingspringboot.dto.ProductRequestDTO;
 import com.example.gcashtrainingspringboot.model.Product;
 import com.example.gcashtrainingspringboot.service.ProductService;
 import org.junit.jupiter.api.Test;
@@ -83,7 +84,7 @@ class ProductControllerTest {
     @Test
     void testUpdateProduct_found() throws Exception{
         Product updatedProduct = new Product(1L, "Apple Macbook", 1500.00);
-        when(productService.update(eq(1L), any(Product.class))).thenReturn(Optional.of(updatedProduct));
+        when(productService.update(eq(1L), any(ProductRequestDTO.class))).thenReturn(Optional.of(updatedProduct));
 
         mockMvc.perform(put("/products/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -96,7 +97,7 @@ class ProductControllerTest {
     @Test
     void testPatchProduct_found() throws Exception {
         Product patchedProduct = new Product(1L, "Laptop Ultra", 1600.00);
-        when(productService.patch(eq(1L), any(Product.class))).thenReturn(Optional.of(patchedProduct));
+        when(productService.patch(eq(1L), any(ProductRequestDTO.class))).thenReturn(Optional.of(patchedProduct));
 
         mockMvc.perform(patch("/products/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -108,7 +109,7 @@ class ProductControllerTest {
 
     @Test
     void testPatchProduct_notFound() throws Exception {
-        when(productService.patch(eq(2L), any(Product.class))).thenReturn(Optional.empty());
+        when(productService.patch(eq(2L), any(ProductRequestDTO.class))).thenReturn(Optional.empty());
 
         mockMvc.perform(patch("/products/2")
                         .contentType(MediaType.APPLICATION_JSON)

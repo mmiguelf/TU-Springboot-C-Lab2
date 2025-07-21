@@ -1,5 +1,6 @@
 package com.example.gcashtrainingspringboot.service;
 
+import com.example.gcashtrainingspringboot.dto.ProductRequestDTO;
 import com.example.gcashtrainingspringboot.model.Product;
 import com.example.gcashtrainingspringboot.repository.ProductRepository;
 import org.springframework.data.domain.*;
@@ -36,17 +37,20 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public Optional<Product> update(Long id, Product newProduct) {
+    public Optional<Product> update(Long id, ProductRequestDTO newProduct) {
         Optional<Product> existing = productRepository.findById(id);
+        Product update = new Product();
+        update.setName(newProduct.getName());
+        update.setPrice(newProduct.getPrice());
         if (existing.isPresent()){
-            newProduct.setId(id);
-            return Optional.of(productRepository.save(newProduct));
+            update.setId(id);
+            return Optional.of(productRepository.save(update));
         }
         return Optional.empty();
     }
 
     @Override
-    public Optional<Product> patch(Long id, Product patchProduct) {
+    public Optional<Product> patch(Long id, ProductRequestDTO patchProduct) {
         Optional<Product> existing = productRepository.findById(id);
         if ((existing.isPresent())){
             Product exist = existing.get();
@@ -56,10 +60,10 @@ public class ProductServiceImpl implements ProductService{
             }
 
             if(patchProduct.getPrice() != null){
-                exist.setName(String.valueOf(patchProduct.getPrice()));
+                exist.setPrice(patchProduct.getPrice());
             }
 
-            return Optional.of(productRepository.save(patchProduct));
+            return Optional.of(productRepository.save(exist));
         }
 
 
