@@ -2,6 +2,7 @@ package com.example.gcashtrainingspringboot.controller;
 
 import com.example.gcashtrainingspringboot.model.Product;
 import com.example.gcashtrainingspringboot.repository.ProductRepository;
+import com.example.gcashtrainingspringboot.service.ProductService;
 import com.example.gcashtrainingspringboot.service.ProductServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -14,9 +15,9 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/products")
 public class ProductController {
-    private final ProductServiceImpl productService;
+    private final ProductService productService;
 
-    public ProductController(ProductServiceImpl productService) {
+    public ProductController(ProductService productService) {
         this.productService = productService;
     }
 

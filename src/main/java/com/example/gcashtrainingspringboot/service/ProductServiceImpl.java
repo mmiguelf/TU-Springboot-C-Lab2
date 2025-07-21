@@ -63,6 +63,11 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public boolean deleteProduct(Long id) {
-        return productRepository.deleteByID(id);
+        if(productRepository.existsById(id)){
+            productRepository.deleteById(id);
+            return true;
+        }
+        return false;
+
     }
 }
