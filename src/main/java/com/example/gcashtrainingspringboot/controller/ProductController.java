@@ -49,8 +49,19 @@ public class ProductController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Product createProduct(@Valid @RequestBody Product newProduct){
-        return productService.saveProduct(newProduct);
+    public ProductResponseDTO createProduct(@Valid @RequestBody ProductRequestDTO productRequestDTO){
+        Product product = new Product();
+        product.setName(productRequestDTO.getName());
+        product.setPrice(productRequestDTO.getPrice());
+
+        Product savedProduct = productService.saveProduct(product);
+
+        ProductResponseDTO productResponseDTO = new ProductResponseDTO();
+        productResponseDTO.setId(savedProduct.getId());
+        productResponseDTO.setName(savedProduct.getName());
+        productResponseDTO.setPrice(savedProduct.getPrice());
+
+        return productResponseDTO;
     }
 
     @DeleteMapping("/{id}")
