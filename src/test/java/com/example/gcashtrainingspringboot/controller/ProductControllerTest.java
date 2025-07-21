@@ -36,17 +36,16 @@ class ProductControllerTest {
                new Product(1L, "Keyboard", 150.0),
                new Product(2L, "Mouse", 50.0)
        );
-       Page<Product> mockProducts = new PageImpl(mockProductsList);
-       Pageable pageable = PageRequest.of(0, 8);
+       Page<Product> mockProducts = new PageImpl<>(mockProductsList);
 
-       when(productService.findAllProducts(pageable)).thenReturn(mockProducts);
+       when(productService.findAllProducts(any(), any(Pageable.class))).thenReturn(mockProducts);
 
        mockMvc.perform(get("/products"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.length()").value(2))
-                .andExpect(jsonPath("$[0].name").value("Keyboard"))
-                .andExpect(jsonPath("$[1].price").value(50.0));
+                .andExpect(jsonPath("$.content.length()").value(2))
+                .andExpect(jsonPath("$.content[0].name").value("Keyboard"))
+                .andExpect(jsonPath("$.content[1].price").value(50.0));
 
     }
 
