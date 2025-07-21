@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProductService {
-    Page<Product> findAllProducts(String searchKeyword, Pageable pageable);
+    Page<Product> findAllProducts(String search, Pageable pageable);
     Optional<Product> findProductByID(Long id);
     Product saveProduct(Product product);
     Optional<Product> update(Long id, Product newProduct);

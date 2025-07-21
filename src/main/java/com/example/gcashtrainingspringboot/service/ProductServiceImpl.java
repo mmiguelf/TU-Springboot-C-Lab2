@@ -17,9 +17,9 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public Page<Product> findAllProducts(String searchKeyword, Pageable pageable) {
-        if (searchKeyword != null && !searchKeyword.isEmpty()) {
-            return productRepository.findByNameContainingIgnoreCase(searchKeyword, pageable);
+    public Page<Product> findAllProducts(String search, Pageable pageable) {
+        if (search != null && !search.isEmpty()) {
+            return productRepository.findByNameContainingIgnoreCase(search, pageable);
         } else {
             return productRepository.findAll(pageable);
         }

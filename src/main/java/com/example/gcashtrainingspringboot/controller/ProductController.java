@@ -25,9 +25,9 @@ public class ProductController {
     }
 
     @GetMapping
-    public Page<ProductResponseDTO> getAll(@RequestParam(required = false) String searchKeyword, Pageable pageable){
+    public Page<ProductResponseDTO> getAll(@RequestParam(required = false) String search, Pageable pageable){
 
-        Page<Product> productsPage = productService.findAllProducts(searchKeyword, pageable);
+        Page<Product> productsPage = productService.findAllProducts(search, pageable);
 
         return productsPage.map(product -> {
             ProductResponseDTO dto = new ProductResponseDTO();
