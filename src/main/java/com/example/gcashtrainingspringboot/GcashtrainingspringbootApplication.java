@@ -9,5 +9,4 @@ public class GcashtrainingspringbootApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(GcashtrainingspringbootApplication.class, args);
 	}
-
 }
