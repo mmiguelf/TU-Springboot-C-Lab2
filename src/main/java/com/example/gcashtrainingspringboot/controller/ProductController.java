@@ -2,6 +2,7 @@ package com.example.gcashtrainingspringboot.controller;
 
 import com.example.gcashtrainingspringboot.model.Product;
 import com.example.gcashtrainingspringboot.repository.ProductRepository;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,7 @@ public class ProductController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Product createProduct(@RequestBody Product newProduct){
+    public Product createProduct(@Valid @RequestBody Product newProduct){
         return productRepository.save(newProduct);
     }
 
@@ -48,6 +49,40 @@ public class ProductController {
     }
 
     // @PatchMapping
+    @PatchMapping("/{id}")
+    public ResponseEntity<Product> patchProduct(@PathVariable Long id, @Valid @RequestBody Product patchData){
+        Optional<Product> existingOpt = productRepository.findById(id);
+
+        if(existingOpt.isPresent()){
+            Product existing = existingOpt.get();
+
+            // Update only the non-null fields
+            if (patchData.getName() != null) {
+                existing.setName(patchData.getName());
+            }
+
+            if (patchData.getPrice() != null) {
+                existing.setPrice(patchData.getPrice());
+            }
+
+            Product saved = productRepository.save(existing);
+            return ResponseEntity.ok(saved);
+        }else{
+            return ResponseEntity.notFound().build();
+        }
+    }
 
     // @PutMapping
+    @PutMapping("/{id}")
+    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @Valid @RequestBody Product updatedProduct){
+        Optional<Product> existing = productRepository.findById(id);
+
+        if(existing.isPresent()){
+            updatedProduct.setId(id);
+            Product saved = productRepository.save(updatedProduct);
+            return ResponseEntity.ok(saved);
+        }else{
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
