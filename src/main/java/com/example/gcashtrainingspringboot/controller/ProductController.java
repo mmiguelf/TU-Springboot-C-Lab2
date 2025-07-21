@@ -1,5 +1,7 @@
 package com.example.gcashtrainingspringboot.controller;
 
+import com.example.gcashtrainingspringboot.dto.ProductRequestDTO;
+import com.example.gcashtrainingspringboot.dto.ProductResponseDTO;
 import com.example.gcashtrainingspringboot.model.Product;
 import com.example.gcashtrainingspringboot.repository.ProductRepository;
 import com.example.gcashtrainingspringboot.service.ProductService;
@@ -23,8 +25,19 @@ public class ProductController {
     }
 
     @GetMapping
-    public Page<Product> getAll(Pageable pageable){
-        return productService.findAllProducts(pageable);
+    public Page<ProductResponseDTO> getAll(@RequestParam(required = false) String searchKeyword, Pageable pageable){
+
+        Page<Product> productsPage = productService.findAllProducts(searchKeyword, pageable);
+
+        return productsPage.map(product -> {
+            ProductResponseDTO dto = new ProductResponseDTO();
+            dto.setId(product.getId());
+            dto.setName(product.getName());
+            dto.setPrice(product.getPrice());
+            return dto;
+        });
+
+
     }
 
     @GetMapping("/{id}")
