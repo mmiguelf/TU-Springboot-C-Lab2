@@ -5,6 +5,7 @@ import com.example.gcashtrainingspringboot.repository.ProductRepository;
 import com.example.gcashtrainingspringboot.service.ProductService;
 import com.example.gcashtrainingspringboot.service.ProductServiceImpl;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,8 +23,8 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> getAll(){
-        return productService.findAllProducts();
+    public Page<Product> getAll(Pageable pageable){
+        return productService.findAllProducts(pageable);
     }
 
     @GetMapping("/{id}")

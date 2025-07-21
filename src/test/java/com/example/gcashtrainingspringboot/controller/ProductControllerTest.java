@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.*;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.assertj.MockMvcTester;
@@ -31,12 +32,14 @@ class ProductControllerTest {
 
     @Test
     void testGetAllProducts() throws Exception{
-       List<Product> mockProducts = Arrays.asList(
+       List<Product> mockProductsList = Arrays.asList(
                new Product(1L, "Keyboard", 150.0),
                new Product(2L, "Mouse", 50.0)
        );
+       Page<Product> mockProducts = new PageImpl(mockProductsList);
+       Pageable pageable = PageRequest.of(0, 8);
 
-       when(productService.findAllProducts()).thenReturn(mockProducts);
+       when(productService.findAllProducts(pageable)).thenReturn(mockProducts);
 
        mockMvc.perform(get("/products"))
                 .andExpect(status().isOk())
